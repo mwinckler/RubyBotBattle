@@ -1,3 +1,9 @@
+# This is a Work in Progress.
+# there is one problem I am stll addressing.
+# When it is done, it will turn around and around until
+# it sees an enemy bot. When it does, it will shoot until
+# the enemy bot goes out of its line of fire. 
+
 class FangBot
   def initialize()
     @turn = 0
