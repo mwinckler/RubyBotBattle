@@ -123,7 +123,7 @@ module Models
       # and lie about things if the bot's damaged or being jammed.
       return FilteredGameState.new(
         Models::Size.new(@config.width, @config.height),
-        safe_bot_states.reject {|k, v| k == bot}
+        safe_bot_states.reject {|state| state.bot == bot}
       )
     end
 
