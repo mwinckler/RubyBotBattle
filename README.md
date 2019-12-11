@@ -1,6 +1,6 @@
 # Bot Battle
 
-This is a simple bot-battling framework designed to make it more fun to learn Ruby. To get started, run:
+This is a simple bot-battling framework designed to make it more fun to learn Ruby. To get started, from the repository's base directory run:
 
 ```
 bundle
@@ -22,10 +22,10 @@ During a battle, the game orchestrator will instantiate your bot class and each 
 
 ### The `act` method in detail
 
-Your bot's `act` method should evaluate the current game and bot state and decide on an action to take. The first argument, `game_state`, will include the following properties:
+Your bot's `act` method should evaluate the current game and bot state and decide on an action to take. The first argument, `game_state`, is a [`FilteredGameState`](./models/filtered_game_state.rb) and includes the following properties:
 
 * `arena_size` ([`Models::Size`](./models/size.rb)) - an object with two attributes, `width` and `height`, representing the number of columns and rows in the arena respectively.
-* `bots` (array of `BotState`) - an array of `BotState` objects, each representing the current state of a bot on the map. This array will include your own bot.
+* `enemies` (array of [`BotState`](./models/bot_state.rb)) - an array of [`BotState`](./models/bot_state.rb) objects, each representing the current state of a bot on the map. This array will not include your own bot.
 
 The second argument to `act`, `bot_state`, includes information about your bot's current condition. Attributes include:
 
