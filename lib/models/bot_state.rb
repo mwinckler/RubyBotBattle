@@ -1,6 +1,7 @@
 module Models
   class BotState
     attr_accessor :bot, :available_energy, :health, :facing, :position
+
     def initialize(bot, available_energy, health, facing, position)
       @bot = bot
       @available_energy = available_energy
