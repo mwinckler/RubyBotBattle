@@ -24,8 +24,8 @@ module Actions
     private
 
     def self.calculate_destination(bot_state, speed)
-      translation = Util::Direction.translate(bot_state.facing, speed)
-      return bot_state.position.translate(translation.x, translation.y)
+      offset = Util::Direction.create_offset(bot_state.facing, speed)
+      return bot_state.position.translate(offset.x, offset.y)
     end
 
     def self.can_advance?(game_state, destination)
