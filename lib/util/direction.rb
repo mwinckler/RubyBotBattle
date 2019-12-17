@@ -2,7 +2,7 @@ require_relative "../models/point"
 
 module Util
   class Direction
-    def self.translate(direction, distance = 1)
+    def self.create_offset(direction, distance = 1)
       x = 0
       y = 0
 
@@ -18,6 +18,19 @@ module Util
       end
 
       return Models::Point.new(x, y)
+    end
+
+    def self.opposite(direction)
+      case direction
+      when :north
+        return :south
+      when :east
+        return :west
+      when :south
+        return :north
+      when :west
+        return :east
+      end
     end
   end
 end

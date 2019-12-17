@@ -15,11 +15,11 @@ module Models
     end
 
     def first_occupied(from_point, in_direction)
-      translation = Util::Direction.translate(in_direction, 1)
-      pt = from_point.clone.translate!(translation.x, translation.y)
+      offset = Util::Direction.create_offset(in_direction, 1)
+      pt = from_point.clone.translate!(offset.x, offset.y)
 
       while !occupied?(pt) && in_bounds?(pt)
-        pt.translate!(translation.x, translation.y)
+        pt.translate!(offset.x, offset.y)
       end
 
       return pt
