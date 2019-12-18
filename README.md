@@ -40,7 +40,8 @@ With this information, you must decide which action to take and return a symbol 
 * `:face_east` (1 energy) - face your bot east.
 * `:face_south` (1 energy) - face your bot south.
 * `:face_west` (1 energy) - face your bot west.
-* `:advance` (1 energy) - move forward one space. This action costs 1 energy.
-* `:reverse` (1 energy) - move backward one space. This action costs 1 energy.
+* `:advance` (1 energy) - move forward one space.
+* `:reverse` (1 energy) - move backward one space.
+* `:lunge` (5 energy) - move forward three spaces. If your bot runs into a wall, it will take 2 damage. If it runs into an enemy, your bot will take 1 damage and the enemy will take 1 damage and be shoved into the next space in the direction you are lunging. If that space is already occupied, the enemy will instead take 2 damage.
 * `:fire_laser` (5 energy) - fire your laser in the current direction you are facing.
 * `:charge_battery` (0 energy) - sit still and regain energy for one second. The floor of the arena is designed to provide power to idle bots; for each turn you spend sitting still you regain 5 energy.
