@@ -14,7 +14,7 @@ Choose "Quick battle", follow the prompts to select your combatants, and enjoy t
 The real fun starts when you define your own bot to fight in the arena. The game attempts to load bots from the [./bots](./bots) directory. You can see an example bot class in [./bots/d_bot.rb](./bots/d_bot.rb). To make your own bot AI, you must:
 
 * Create a new file in the `bots` directory and give it a name corresponding to your class name. The file must be in `snake_case` and the class name in `TitleCase`. For example, if your bot class is named `KillerBot`, the filename would be `killer_bot.rb`.
-* In the new file, define a class (with the name matching the filename as just described). This class must provide a constructor (`initialize(max_health)`) and two public methods: `name` and `act`.
+* In the new file, define a class (with the name matching the filename as just described). This class must provide two public methods: `name` and `act`.
   * The `name` method must return a string that is the human-readable bot name. This can be whatever you like.
   * The `act` method must accept two arguments: [`GameState`](./lib/models/game_state.rb) and [`BotState`](./lib/models/bot_state.rb). The first is an object defining the current state of the world (as your bot sees it - this could differ from reality!) and the second is an object defining the current state of your bot (available energy, position on the field, direction it is facing, etc.). The `act` method must return a symbol indicating which action your bot is going to take. (More on this below.)
 
