@@ -3,6 +3,7 @@ require_relative "charge_battery"
 require_relative "face"
 require_relative "fire_laser"
 require_relative "lunge"
+require_relative "repair"
 require_relative "reverse"
 require_relative "../exceptions/invalid_action"
 
@@ -21,6 +22,8 @@ module Actions
         return FireLaser.method(:execute).curry.call(unsafe_game_state)
       when :lunge
         return Lunge.method(:execute).curry.call(unsafe_game_state)
+      when :repair
+        return Repair.method(:execute)
       when :reverse
         return Reverse.method(:execute).curry.call(unsafe_game_state)
       else
