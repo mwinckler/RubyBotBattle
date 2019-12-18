@@ -18,8 +18,8 @@ class TheBurninator
     my_xstate = bot_state.position.x
 
     if @turn > 1 
-      if my_ystate.abs 
-        if  my_xstate.abs == 1 
+      if y_dif.abs == 1
+        if  x_dif.abs == 1 
           return :reverse
         end
       end
@@ -32,6 +32,7 @@ class TheBurninator
       if y_dif > 0
         if bot_state.facing == :north
           return :fire_laser
+
         else
           return :face_north
         end
@@ -60,17 +61,21 @@ class TheBurninator
       end
     end      
 
-    if @turn > 40  # hunter mode
+    if @turn > 70  # hunter mode
       if y_dif.abs > x_dif.abs   #  closer in x direction
         if x_dif < 0  # enemy is to east
             if bot_state.facing == :east
               return :advance
+            elsif bot_state.facing == :west
+              return :reverse
             else
               return :face_east
             end
         else
             if bot_state.facing == :west
               return :advance
+            elsif bot_state.facing == :east
+              return :reverse
             else
               return :face_west
             end
@@ -79,12 +84,16 @@ class TheBurninator
           if y_dif < 0 #
               if bot_state.facing == :south
                 return :advance
+              elsif bot_state.facing == :north
+                return :reverse
               else
                 return :face_south
               end
           else
               if bot_state.facing == :north
                 return :advance
+              elsif bot_state.facing == :south
+                return :reverse
               else
                 return :face_north
               end
