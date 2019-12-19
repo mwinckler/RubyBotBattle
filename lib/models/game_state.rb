@@ -1,4 +1,5 @@
 require_relative "../util/direction"
+require_relative "../exceptions/invalid_condition"
 
 module Models
   class GameState

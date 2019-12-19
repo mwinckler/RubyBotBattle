@@ -1,6 +1,7 @@
 require_relative "advance"
 require_relative "charge_battery"
 require_relative "face"
+require_relative "fire_flamethrower"
 require_relative "fire_laser"
 require_relative "lunge"
 require_relative "repair"
@@ -32,6 +33,8 @@ module Actions
         return Repair.method(:execute).curry.call(@animation_manager)
       when :reverse
         return Reverse.method(:execute).curry.call(unsafe_game_state)
+      when :fire_flamethrower
+        return FireFlamethrower.method(:execute).curry.call(@animation_manager, unsafe_game_state)
       else
         raise Exceptions::InvalidActionError.new(action_name)
       end
