@@ -1,4 +1,5 @@
 require_relative "fire_laser"
+require_relative "fire_flamethrower"
 require_relative "destroy_bot"
 require_relative "lunge"
 require_relative "repair"
@@ -28,6 +29,10 @@ module Views
         @animations.push(Views::Animations::Repair.new(position))
       end
 
+      def add_burning_animations(locations)
+        @animations.concat(locations.map { |location| Views::Animations::FireFlamethrower.new(location) })
+      end
+
       def render(frame, render_offset)
         @animations.each { |animation| animation.render(frame, render_offset) }
         remove_completed_animations()
@@ -40,16 +45,6 @@ module Views
       def render(frame, render_offset)
         @animations.each { |animation| animation.render(frame, render_offset) }
         remove_completed_animations()
-      end
-
-      private
-
-      def remove_completed_animations()
-        @animations.reject! { |animation| animation.complete?() }
-      end
-
-      def animations_complete?()
-        return @animations.empty?()
       end
 
       private

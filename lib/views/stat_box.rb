@@ -21,7 +21,8 @@ module Views
         print move.(0)
         print write_name.(state.bot.display_name())
         print move.(1)
-        print @pastel.on_black("(#{state.position.x}, #{state.position.y}) E: #{state.available_energy} H: #{state.health}")
+        print @pastel.on_black("(#{state.position.x}, #{state.position.y}) E: #{state.available_energy} H: #{state.health} ")
+        print @pastel.on_black(@pastel.red("[On fire!]")) if state.conditions.include?(:burning)
       end
 
       print @cursor.move_to(@location.x, @location.y + bot_states.count * @stat_rows + 2)

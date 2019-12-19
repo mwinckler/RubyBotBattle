@@ -59,6 +59,12 @@ module Models
         end
       end
 
+      get_bots_with_conditions().each do |bot_state|
+        if (bot_state.conditions.include?(:burning))
+          bot_state.health -= 1
+        end
+      end
+
       get_dead_bots().each {|dead_bot| @animation_manager.add_destroy_bot(@bot_states[dead_bot].position) }
       @bots.reject! {|bot| bot_dead?(@bot_states[bot]) }
       @bot_states.reject! {|bot, state| bot_dead?(state) }
@@ -147,6 +153,10 @@ module Models
 
     def safe_bot_state_for(bot)
       return @bot_states[bot].clone
+    end
+
+    def get_bots_with_conditions()
+      return @bot_states.values.filter { |state| !state.conditions.empty? }
     end
   end
 end

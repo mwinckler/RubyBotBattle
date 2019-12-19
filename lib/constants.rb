@@ -8,4 +8,6 @@ module Constants
   MAX_TURNS = 120
 
   LASER_DAMAGE = 3
+  FLAMETHROWER_COST = 20
+  FLAMETHROWER_DAMAGE = 1
 end
