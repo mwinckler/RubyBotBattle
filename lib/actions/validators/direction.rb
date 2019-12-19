@@ -11,7 +11,7 @@ module Validators
       ]
 
       raise ArgumentError.new("`direction` argument '#{direction}' must be a symbol") unless direction.is_a?(Symbol)
-      raise InvalidDirectionError.new(direction) unless valid_directions.include?(direction)
+      raise Exceptions::InvalidDirectionError.new(direction) unless valid_directions.include?(direction)
     end
   end
 end

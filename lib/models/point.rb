@@ -7,11 +7,15 @@ module Models
       @y = y
     end
 
-    def translate(x, y)
+    def translate(x, y = nil)
+      return translate(x.x, x.y) if x.is_a?(Point)
+
       return self.clone.translate!(x, y)
     end
 
-    def translate!(x, y)
+    def translate!(x, y = nil)
+      return translate!(x.x, x.y) if x.is_a?(Point)
+
       @x += x
       @y += y
       return self

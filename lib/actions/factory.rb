@@ -1,8 +1,10 @@
 require_relative "advance"
-require_relative "reverse"
 require_relative "charge_battery"
 require_relative "face"
 require_relative "fire_laser"
+require_relative "lunge"
+require_relative "repair"
+require_relative "reverse"
 require_relative "../exceptions/invalid_action"
 
 module Actions
@@ -11,8 +13,6 @@ module Actions
       case action_name
       when :advance
         return Advance.method(:execute).curry.call(unsafe_game_state)
-      when :reverse
-        return Reverse.method(:execute).curry.call(unsafe_game_state)
       when :charge_battery
         return ChargeBattery.method(:execute)
       when /^face_\w+/
@@ -20,6 +20,12 @@ module Actions
         return Face.method(:execute).curry.call(direction)
       when :fire_laser
         return FireLaser.method(:execute).curry.call(unsafe_game_state)
+      when :lunge
+        return Lunge.method(:execute).curry.call(unsafe_game_state)
+      when :repair
+        return Repair.method(:execute)
+      when :reverse
+        return Reverse.method(:execute).curry.call(unsafe_game_state)
       else
         raise Exceptions::InvalidActionError.new(action_name)
       end
