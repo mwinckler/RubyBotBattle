@@ -17,28 +17,32 @@ class TheBurninator
     my_ystate = bot_state.position.y 
     my_xstate = bot_state.position.x
 
-    if @turn > 1 
-      if y_dif.abs == 1
-        if  x_dif.abs == 1 
-          return :reverse
-        end
-      end
-    end 
-
     y_dif = my_ystate - y_state
     x_dif = my_xstate - x_state
+
+
+    if bot_state.health < 5
+      return :repair 
+    end
 
     if x_dif == 0
       if y_dif > 0
         if bot_state.facing == :north
-          return :fire_laser
-
+          if y_dif.abs <= 3
+            return :lunge
+          else
+            return :fire_laser
+          end
         else
           return :face_north
         end
       else
         if bot_state.facing == :south
-          return :fire_laser
+          if y_dif.abs <= 3
+            return :lunge
+          else
+            return :fire_laser
+          end
         else
           return :face_south
         end
@@ -48,32 +52,64 @@ class TheBurninator
     if y_dif == 0
       if x_dif < 0 
         if bot_state.facing == :east
-          return :fire_laser
+          if x_dif.abs <= 3 
+            if game_state.enemies[0].health == 1
+              return :lunge
+            else
+              return :fire_laser
+            end
+          else
+            return :fire_laser
+          end
         else
           return :face_east
         end
       else
         if bot_state.facing == :west
-          return :fire_laser
+          if x_dif.abs <= 3
+            if game_state.enemies[0].health == 1
+              return :lunge
+            else
+              return :fire_laser
+            end
+          else
+            return :fire_laser
+          end
         else 
           return :face_west
         end
       end
     end      
+    
+    if @turn > 1 
+      if y_dif.abs <= 3
+        if  x_dif.abs <= 3 
+          return :reverse
+        end
+      end
+    end 
 
-    if @turn > 70  # hunter mode
+    if @turn > 60  # hunter mode
       if y_dif.abs > x_dif.abs   #  closer in x direction
         if x_dif < 0  # enemy is to east
             if bot_state.facing == :east
-              return :advance
+              if x_dif.abs >= 3
+                return :lunge
+              else
+                return :advance
+              end
             elsif bot_state.facing == :west
               return :reverse
             else
               return :face_east
             end
-        else
+        else # enemy is west
             if bot_state.facing == :west
-              return :advance
+              if x_dif.abs >= 3
+                return :lunge
+              else
+                return :advance
+              end
             elsif bot_state.facing == :east
               return :reverse
             else
@@ -81,17 +117,25 @@ class TheBurninator
             end
         end
       else
-          if y_dif < 0 #
+          if y_dif < 0 # enemy is south
               if bot_state.facing == :south
-                return :advance
+                if x_dif.abs >= 3
+                  return :lunge
+                else
+                  return :advance
+                end
               elsif bot_state.facing == :north
                 return :reverse
               else
                 return :face_south
               end
-          else
+          else # enemy is north
               if bot_state.facing == :north
-                return :advance
+                if x_dif.abs >= 3
+                  return :lunge
+                else
+                  return :advance
+                end
               elsif bot_state.facing == :south
                 return :reverse
               else
