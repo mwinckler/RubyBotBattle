@@ -54,6 +54,9 @@ module Models
         end
       end
 
+      @bots.reject! {|bot| @bot_states[bot].health <= 0 }
+      @bot_states.reject! {|bot, state| state.health <= 0 }
+
       return Models::TurnResult.new(action_results, safe_bot_states())
     end
 
