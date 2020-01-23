@@ -18,6 +18,12 @@ class PuddleBot
         # Difference between 2 positions
         x_diff = puddle_x - enemy_x
         y_diff = puddle_y - enemy_y
+        # special endgame gloat technology for when puddle wins
+        dead = game_state.enemies.nil?
+        if dead == true
+            puts "VICTORY OVER TYRANNY!"
+            puts "DOWN WITH OPPRESION!"
+        end
         # abs = absolute value according to ruby.docs so that will account for negative+positive quadrants... 
         # This should put the puddle into a mode where he will wait 19 turns just to see if a bot will come into LoS 
         # Kind of like Henry's but shorter so that the puddle will strike first... 
