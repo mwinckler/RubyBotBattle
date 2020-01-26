@@ -1,4 +1,7 @@
-# A very basic fighting machine inspired by an inexpensive automated vacuum cleaner.
+#Fools rush in.
+#  This bot isn't subtle - move into position and laser enemies without further ado.
+#  OK for dumb bots that don't happen to be shooting in its direction.
+#  Not so great for fancy-dancy sneaky bots.
 class HunterKiller
   @move_count
 
@@ -15,7 +18,7 @@ class HunterKiller
     if bot_state.available_energy < 5
       return :charge_battery
     end
-
+ 
 # Identify closest enemy
 
 closest_enemy=game_state.enemies[0]
@@ -24,21 +27,14 @@ closest_enemy=game_state.enemies[0]
     game_state.enemies.each do |each_enemy|
       x_dist = bot_state.position.x-each_enemy.position.x
       y_dist = bot_state.position.y-each_enemy.position.y
-#    for i in 0..game_state.enemies.size-1
-#      x_dist = bot_state.position.x-game_state.enemies[i].position.x
-#      y_dist = bot_state.position.y-game_state.enemies[i].position.y
       dist = [x_dist.abs,y_dist.abs].min
-#      if (dist < mindist && game_state.enemies[i].health > 0)
       if dist < mindist
         closest_enemy = each_enemy
         mindist = dist
       end
     end
 
- #   closest_enemy = 0
 
-#    x_dist = bot_state.position.x-game_state.enemies[closest_enemy].position.x
-#    y_dist = bot_state.position.y-game_state.enemies[closest_enemy].position.y
     x_dist = bot_state.position.x-closest_enemy.position.x
     y_dist = bot_state.position.y-closest_enemy.position.y
 
@@ -85,7 +81,7 @@ closest_enemy=game_state.enemies[0]
         if bot_state.facing == :west
           return :advance
         else
-          return :face_wast
+          return :face_west #This used to say "wast" but I, Henry, fixed it.
         end
       end
     else
