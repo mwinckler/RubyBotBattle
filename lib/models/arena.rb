@@ -7,6 +7,8 @@ require_relative "size"
 require_relative "turn_result"
 require_relative "../exceptions/insufficient_energy"
 require_relative "../exceptions/invalid_direction"
+require_relative "../actions/animations/destroy_bot"
+
 
 module Models
   class Arena
@@ -41,9 +43,13 @@ module Models
       # pointer to the real game and bot states, not clones.
       unsafe_game_state = create_unsafe_game_state
       action_results = []
+
       @bots.each do |bot|
         begin
-          action_results << Actions::Factory.create_executor(unsafe_game_state, actions[bot]).call(@bot_states[bot])
+          action_result = Actions::Factory.create_executor(unsafe_game_state, actions[bot]).call(@bot_states[bot])
+
+          get_dead_bots().each {|dead_bot| action_result.animations.push(Actions::Animations::DestroyBot.new(@bot_states[dead_bot].position)) }
+          action_results << action_result
         rescue Exceptions::InsufficientEnergyError => e
           # TODO: Add an animation to indicate the energy shortage
           # Suppress error for now
@@ -54,7 +60,18 @@ module Models
         end
       end
 
+      @bots.reject! {|bot| bot_dead?(@bot_states[bot]) }
+      @bot_states.reject! {|bot, state| bot_dead?(state) }
+
       return Models::TurnResult.new(action_results, safe_bot_states())
+    end
+
+    def get_dead_bots()
+      return @bots.filter {|bot| bot_dead?(@bot_states[bot]) }
+    end
+
+    def bot_dead?(bot_state)
+      return bot_state.health <= 0
     end
 
     # Returns a clone of game state objects to ensure bots cannot manipulate states.

@@ -19,7 +19,7 @@ module Views
       @height = height
       @pastel = Pastel.new()
 
-      available_colors = [@pastel.red.detach, @pastel.green.detach, @pastel.blue.detach, @pastel.yellow.detach, @pastel.white.detach]
+      available_colors = [@pastel.red.detach, @pastel.green.detach, @pastel.cyan.detach, @pastel.yellow.detach, @pastel.white.detach, @pastel.magenta.detach]
       @bot_colors = bots.to_h {|bot| [bot.display_name, available_colors.shift()]}
 
       print TTY::Box.frame(
