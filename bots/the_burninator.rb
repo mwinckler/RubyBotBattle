@@ -2,11 +2,16 @@
 class TheBurninator 
   def initialize()
     @turn = 0
-  end 
+  end  
 
   def display_name()
+    #  if rand(0..20) <= 10
+    #    return "The Burninator! -The One and Only Ruby Bot Battles CHAMPION!!!"
+    #  else
+    #    return "The Burninator!"
+    #  end
     return "The Burninator!"
-  end
+  end 
 
   def act(game_state, bot_state)
     @turn += 1
@@ -20,7 +25,9 @@ class TheBurninator
     y_dif = my_ystate - y_state
     x_dif = my_xstate - x_state
 
+    n_enemies = game_state.enemies.size 
 
+    
     if bot_state.health < 5
       return :repair 
     end
@@ -29,7 +36,11 @@ class TheBurninator
       if y_dif > 0
         if bot_state.facing == :north
           if y_dif.abs <= 3
-            return :lunge
+            if game_state.enemies[0].health == 1
+              return :lunge
+            else
+              return :fire_laser
+            end
           else
             return :fire_laser
           end
@@ -39,7 +50,11 @@ class TheBurninator
       else
         if bot_state.facing == :south
           if y_dif.abs <= 3
-            return :lunge
+            if game_state.enemies[0].health == 1
+              return :lunge
+            else
+              return :fire_laser
+            end
           else
             return :fire_laser
           end
@@ -80,7 +95,7 @@ class TheBurninator
         end
       end
     end      
-    
+
     if @turn > 1 
       if y_dif.abs <= 3
         if  x_dif.abs <= 3 
