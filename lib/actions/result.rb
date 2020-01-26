@@ -4,7 +4,7 @@ module Actions
 
     def initialize(success, animations = nil)
       @success = success
-      @animations = animations
+      @animations = animations || []
     end
   end
 end
