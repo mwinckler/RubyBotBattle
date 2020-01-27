@@ -1,16 +1,11 @@
-# A sentry cannon type bot
+# A sentry cannon type bot...
 class TheBurninator 
   def initialize()
     @turn = 0
   end  
 
   def display_name()
-    #  if rand(0..20) <= 10
-    #    return "The Burninator! -The One and Only Ruby Bot Battles CHAMPION!!!"
-    #  else
-    #    return "The Burninator!"
-    #  end
-    return "The Burninator!"
+    return "The Burninator!!!"
   end 
 
   def act(game_state, bot_state)
@@ -199,5 +194,3 @@ class TheBurninator
     end
   end
 end
-
-
