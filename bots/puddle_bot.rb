@@ -26,116 +26,115 @@ class PuddleBot
         # This should put the puddle into a mode where he will wait 19 turns just to see if a bot will come into LoS
         # Kind of like Henry's but shorter so that the puddle will strike first...
         # It should work.
-        if @turn > 1
-            puts "Charging..."
-            # Shoot if bot is in LoS x line
-            if x_diff == 0
-                if y_diff > 0
-                    if bot_state.facing == :north
-                        return :fire_laser
-                    else
-                        return :face_north
-                    end
+
+        puts "Charging..."
+        # Shoot if bot is in LoS x line
+        if x_diff == 0
+            if y_diff > 0
+                if bot_state.facing == :north
+                    return :fire_laser
                 else
-                    if bot_state.facing == :south
-                        return :fire_laser
-                    else
-                        return :face_south
-                    end
+                    return :face_north
+                end
+            else
+                if bot_state.facing == :south
+                    return :fire_laser
+                else
+                    return :face_south
                 end
             end
-            # Shoot if bot is in LoS y line
-            if y_diff == 0
+        end
+        # Shoot if bot is in LoS y line
+        if y_diff == 0
+            if x_diff < 0
+                if bot_state.facing == :east
+                    return :fire_laser
+                else
+                    return :face_east
+                end
+            else
+                if bot_state.facing == :west
+                    return :fire_laser
+                else
+                    return :face_west
+                end
+            end
+        end
+        # Mobile Puddle 3000 Tech
+        # REMEMBER THAT abs = ABSOLUTE VALUE! (rubydocs)
+        # mobility for the puddle in the x-axis
+        if @turn > 20
+            puts "The Puddle Has Now Become Mobile."
+            if y_diff.abs > x_diff.abs
                 if x_diff < 0
                     if bot_state.facing == :east
-                        return :fire_laser
+                        return :advance
                     else
                         return :face_east
                     end
                 else
                     if bot_state.facing == :west
-                        return :fire_laser
+                        return :advance
                     else
                         return :face_west
                     end
                 end
-            end
-            # Mobile Puddle 3000 Tech
-            # REMEMBER THAT abs = ABSOLUTE VALUE! (rubydocs)
-            # mobility for the puddle in the x-axis
-            if @turn > 20
-                puts "The Puddle Has Now Become Mobile."
-                if y_diff.abs > x_diff.abs
-                    if x_diff < 0
-                        if bot_state.facing == :east
-                            return :advance
-                        else
-                            return :face_east
-                        end
+            else
+                # same stuff, except for the y-axis
+                if y_diff < 0
+                    if bot_state.facing == :south
+                        return :advance
                     else
-                        if bot_state.facing == :west
-                            return :advance
-                        else
-                            return :face_west
-                        end
+                        return :face_south
                     end
                 else
-                    # same stuff, except for the y-axis
-                    if y_diff < 0
-                        if bot_state.facing == :south
-                            return :advance
-                        else
-                            return :face_south
-                        end
+                    if bot_state.facing == :north
+                        return :advance
                     else
-                        if bot_state.facing == :north
-                            return :advance
-                        else
-                            return :face_north
-                        end
+                        return :face_north
                     end
                 end
+            end
 
-                # a shooting puddle?!
-                # remember, abs is the absolute value...
-                # for the y
-            else
-                if y_diff.abs > x_diff.abs
-                    if y_diff > 0
-                        if bot_state.facing != :east
-                            return :face_east
-                        elsif y_diff == 0
-                            return :fire_laser
-                        else
-                            return :charge_battery
-                        end
+            # a shooting puddle?!
+            # remember, abs is the absolute value...
+            # for the y
+        else
+            if y_diff.abs > x_diff.abs
+                if y_diff > 0
+                    if bot_state.facing != :east
+                        return :face_east
+                    elsif y_diff == 0
+                        return :fire_laser
                     else
-                        if bot_state.facing != :face_west
-                            return :face_west
-                        elsif y_diff == 0
-                            return :fire_laser
-                        else
-                            return :charge_battery
-                        end
+                        return :charge_battery
                     end
-                    # and the x!
                 else
-                    if x_diff > 0
-                        if bot_state.facing != :north
-                            return :face_north
-                        elsif x_diff == 0
-                            return :fire_laser
-                        else
-                            return :charge_battery
-                        end
+                    if bot_state.facing != :face_west
+                        return :face_west
+                    elsif y_diff == 0
+                        return :fire_laser
                     else
-                        if bot_state.facing != :south
-                            return :face_south
-                        elsif x_diff == 0
-                            return :fire_laser
-                        else
-                            return :charge_battery
-                        end
+                        return :charge_battery
+                    end
+                end
+                # and the x!
+            else
+                if x_diff > 0
+                    if bot_state.facing != :north
+                        return :face_north
+                    elsif x_diff == 0
+                        return :fire_laser
+                    else
+                        return :charge_battery
+                    end
+                else
+                    if bot_state.facing != :south
+                        return :face_south
+                    elsif x_diff == 0
+                        return :fire_laser
+                    else
+                        return :charge_battery
                     end
                 end
             end
