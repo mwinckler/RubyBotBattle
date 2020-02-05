@@ -46,10 +46,7 @@ module Models
 
       @bots.each do |bot|
         begin
-          action_result = Actions::Factory.create_executor(unsafe_game_state, actions[bot]).call(@bot_states[bot])
-
-          get_dead_bots().each {|dead_bot| action_result.animations.push(Actions::Animations::DestroyBot.new(@bot_states[dead_bot].position)) }
-          action_results << action_result
+          action_results.push(Actions::Factory.create_executor(unsafe_game_state, actions[bot]).call(@bot_states[bot]))
         rescue Exceptions::InsufficientEnergyError => e
           # TODO: Add an animation to indicate the energy shortage
           # Suppress error for now
@@ -60,6 +57,7 @@ module Models
         end
       end
 
+      get_dead_bots().each {|dead_bot| action_results[0].animations.push(Actions::Animations::DestroyBot.new(@bot_states[dead_bot].position)) }
       @bots.reject! {|bot| bot_dead?(@bot_states[bot]) }
       @bot_states.reject! {|bot, state| bot_dead?(state) }
 
