@@ -4,8 +4,8 @@ require "tty-cursor"
 module Views
   module Animations
     class DestroyBot
-      def initialize(model)
-        @position = model.position
+      def initialize(position)
+        @position = position
         @cursor = TTY::Cursor
         @pastel = Pastel.new()
         @duration = 5

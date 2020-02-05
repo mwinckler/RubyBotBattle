@@ -7,8 +7,8 @@ require_relative "components/character_sequence"
 module Views
   module Animations
     class Repair
-      def initialize(model)
-        @position = model.position
+      def initialize(position)
+        @position = position
         @child_views = []
         @pastel = Pastel.new()
       end

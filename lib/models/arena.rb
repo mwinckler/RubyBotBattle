@@ -7,18 +7,21 @@ require_relative "size"
 require_relative "turn_result"
 require_relative "../exceptions/insufficient_energy"
 require_relative "../exceptions/invalid_direction"
-require_relative "../actions/animations/destroy_bot"
 
 
 module Models
   class Arena
-    def initialize(arena_configuration, bots)
+    def initialize(arena_configuration, animation_manager, bots)
       @valid_facings = [:north, :east, :south, :west]
 
       @config = arena_configuration
+      @animation_manager = animation_manager
       @bot_states = create_bot_states(bots)
       @bots = bots
       @turn = 0
+
+      # TODO: inject this dependency
+      @action_factory = Actions::Factory.new(animation_manager)
     end
 
     def execute_turn()
@@ -42,11 +45,10 @@ module Models
       # may affect multiple bots. We are intentionally passing it the
       # pointer to the real game and bot states, not clones.
       unsafe_game_state = create_unsafe_game_state
-      action_results = []
 
       @bots.each do |bot|
         begin
-          action_results.push(Actions::Factory.create_executor(unsafe_game_state, actions[bot]).call(@bot_states[bot]))
+          @action_factory.create_executor(unsafe_game_state, actions[bot]).call(@bot_states[bot])
         rescue Exceptions::InsufficientEnergyError => e
           # TODO: Add an animation to indicate the energy shortage
           # Suppress error for now
@@ -57,11 +59,12 @@ module Models
         end
       end
 
-      get_dead_bots().each {|dead_bot| action_results[0].animations.push(Actions::Animations::DestroyBot.new(@bot_states[dead_bot].position)) }
+      get_dead_bots().each {|dead_bot| @animation_manager.add_destroy_bot(@bot_states[dead_bot].position) }
       @bots.reject! {|bot| bot_dead?(@bot_states[bot]) }
       @bot_states.reject! {|bot, state| bot_dead?(state) }
 
-      return Models::TurnResult.new(action_results, safe_bot_states())
+      # TODO: Refactor/remove TurnResult
+      return Models::TurnResult.new([], safe_bot_states())
     end
 
     def get_dead_bots()
