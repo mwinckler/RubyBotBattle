@@ -19,9 +19,8 @@ module Views
       @height = height
       @pastel = Pastel.new()
 
-      available_colors = [@pastel.red.detach, @pastel.green.detach, @pastel.blue.detach, @pastel.yellow.detach, @pastel.white.detach]
+      available_colors = [@pastel.red.detach, @pastel.green.detach, @pastel.cyan.detach, @pastel.yellow.detach, @pastel.white.detach, @pastel.magenta.detach]
       @bot_colors = bots.to_h {|bot| [bot.display_name, available_colors.shift()]}
-      names = bots.map {|bot| bot.display_name()}
 
       print TTY::Box.frame(
         width: width + 2,
@@ -33,8 +32,7 @@ module Views
           }
         },
         title: {
-          top_center: 'BOT BATTLE ARENA',
-          bottom_center: names.join(" vs. ")
+          top_center: 'BOT BATTLE ARENA'
         }
       )
 

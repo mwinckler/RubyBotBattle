@@ -16,9 +16,6 @@ module Actions
 
       if !damaged_bot.nil?
         damaged_bot.health -= Constants::LASER_DAMAGE
-        if damaged_bot.health <= 0
-          animations.push(Actions::Animations::DestroyBot.new(damaged_bot.position))
-        end
       end
 
       return Actions::Result.new(true, animations)
