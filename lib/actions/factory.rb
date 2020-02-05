@@ -9,7 +9,13 @@ require_relative "../exceptions/invalid_action"
 
 module Actions
   class Factory
-    def self.create_executor(unsafe_game_state, action_name)
+    @animation_manager
+
+    def initialize(animation_manager)
+      @animation_manager = animation_manager
+    end
+
+    def create_executor(unsafe_game_state, action_name)
       case action_name
       when :advance
         return Advance.method(:execute).curry.call(unsafe_game_state)
@@ -19,11 +25,11 @@ module Actions
         direction = parse_arg(action_name).to_sym
         return Face.method(:execute).curry.call(direction)
       when :fire_laser
-        return FireLaser.method(:execute).curry.call(unsafe_game_state)
+        return FireLaser.method(:execute).curry.call(@animation_manager, unsafe_game_state)
       when :lunge
-        return Lunge.method(:execute).curry.call(unsafe_game_state)
+        return Lunge.method(:execute).curry.call(@animation_manager, unsafe_game_state)
       when :repair
-        return Repair.method(:execute)
+        return Repair.method(:execute).curry.call(@animation_manager)
       when :reverse
         return Reverse.method(:execute).curry.call(unsafe_game_state)
       else
@@ -31,7 +37,7 @@ module Actions
       end
     end
 
-    def self.parse_arg(action_name)
+    def parse_arg(action_name)
       return action_name.to_s.split('_').last()
     end
   end

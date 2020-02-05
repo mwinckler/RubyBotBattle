@@ -4,9 +4,9 @@ require "pastel"
 module Views
   module Animations
     class FireLaser
-      # Model should be Actions::Animations::FireLaser
-      def initialize(model)
-        @model = model
+      def initialize(origin_point, hit_point)
+        @origin_point = origin_point
+        @hit_point = hit_point
 
         @pastel = Pastel.new
         @initial_frame = nil
@@ -24,20 +24,20 @@ module Views
 
         # Draw a red line from origin to hit point.
         # For the time being, assume orthogonal directions.
-        if @model.origin_point.x < @model.hit_point.x
+        if @origin_point.x < @hit_point.x
           dx = 1
-        elsif @model.origin_point.x > @model.hit_point.x
+        elsif @origin_point.x > @hit_point.x
           dx = -1
         end
 
-        if @model.origin_point.y < @model.hit_point.y
+        if @origin_point.y < @hit_point.y
           dy = 1
-        elsif @model.origin_point.y > @model.hit_point.y
+        elsif @origin_point.y > @hit_point.y
           dy = -1
         end
 
-        current_point = @model.origin_point.translate(render_offset.x, render_offset.y).translate(dx, dy)
-        end_point = @model.hit_point.translate(render_offset.x, render_offset.y)
+        current_point = @origin_point.translate(render_offset.x, render_offset.y).translate(dx, dy)
+        end_point = @hit_point.translate(render_offset.x, render_offset.y)
         laser_color = @pastel.red.detach
         cursor = TTY::Cursor
         line_char = dx != 0 ? "-" : "|"
