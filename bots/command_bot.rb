@@ -1,44 +1,60 @@
-class Puddle2Bot
+# A bot you can control!
+# -----IMPORTANT BEFORE USAGE!-------
+# controls --
+# w is face north, a is face west, s is face south, d is face east.
+# q will return advance, while f is fire laser.
+# pressing l results in lunge, r is repair, c is charge. b is reverse.
+class CommandBot
   def initialize()
     @turn = 0
   end
 
   def display_name()
-    return "Puddle Bot 2"
+    return "Command Bot"
   end
 
   def act(game_state, bot_state)
     @turn += 1
-    prompt = TTY::Prompt.new
+    prompt = TTY::Prompt.new()
+    key = prompt.keypress("", timeout: 5)
+    if key == 'w'
+     return :face_north
+    end
 
-    prompt.on(:keyescape) { |key| Q [] }
-    return :advance
+    if key == 'a'
+      return :face_west
+    end
 
-    prompt.on(:keyescape) { |key| W [] }
-    return :face_north
+    if key == 's'
+      return :face_south
+    end
 
-    prompt.on(:keyescape) { |key| A [] }
-    return :face_east
+    if key == 'd'
+      return :face_east
+    end
 
-    prompt.on(:keyescape) { |key| S [] }
-    return :face_south
+    if key == 'q'
+      return :advance
+    end
 
-    prompt.on(:keyescape) { |key| D [] }
-    return :face_west
+    if key == 'f'
+      return :fire_laser
+    end
 
-    prompt.on(:keyescape) { |key| L [] }
-    return :lunge
+    if key == 'l'
+      return :lunge
+    end
 
-    prompt.on(:keyescape) { |key| F [] }
-    return :fire_laser
+    if key == 'r'
+      return :repair
+    end
 
-    prompt.on(:keyescape) { |key| C [] }
-    return :charge_battery
+    if key == 'c'
+      return :charge_battery
+    end
 
-    prompt.on(:keyescape) { |key| R [] }
-    return :repair
-
-    prompt.on(:keyescape) { |key| K [] }
-    return :reverse
+    if key == 'b'
+      return :reverse
+    end
   end
 end
