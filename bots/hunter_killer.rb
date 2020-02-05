@@ -2,6 +2,7 @@
 #  This bot isn't subtle - move into position and laser enemies without further ado.
 #  OK for dumb bots that don't happen to be shooting in its direction.
 #  Not so great for fancy-dancy sneaky bots.
+
 class HunterKiller
   @move_count
 
@@ -19,9 +20,9 @@ class HunterKiller
       return :charge_battery
     end
  
-# Identify closest enemy
+    # Identify closest enemy
 
-closest_enemy=game_state.enemies[0]
+    closest_enemy=game_state.enemies[0]
 
     mindist = 999
     game_state.enemies.each do |each_enemy|
@@ -81,7 +82,7 @@ closest_enemy=game_state.enemies[0]
         if bot_state.facing == :west
           return :advance
         else
-          return :face_west #This used to say "wast" but I, Henry, fixed it.
+          return :face_west
         end
       end
     else
