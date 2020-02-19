@@ -66,13 +66,14 @@ class Game
         arena_view.render(
           arena_model.unsafe_game_state(),
           bot_states,
-          frame,
-          animation_manager.animations
+          frame
         )
 
-        animation_manager.clear()
+        animation_manager.render(frame, arena_view.render_offset)
 
-        if arena_model.game_over?() && arena_view.animations_complete?()
+        arena_view.reset_cursor()
+
+        if arena_model.game_over?() && animation_manager.animations_complete?()
           current_screen = Screen::POST_FIGHT
         end
       when Screen::POST_FIGHT
