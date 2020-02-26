@@ -16,7 +16,7 @@ class CommandBot
   def act(game_state, bot_state)
     @turn += 1
     prompt = TTY::Prompt.new()
-    key = prompt.keypress("", timeout: 1.0 / Constants::FRAMES_PER_SECOND)
+    key = prompt.keypress("", timeout: 1)
     if key == 'w'
      return :face_north
     end
