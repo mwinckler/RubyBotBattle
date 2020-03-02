@@ -1,9 +1,16 @@
 # A bot you can control!
 # -----IMPORTANT BEFORE USAGE!-------
-# controls --
-# w is face north, a is face west, s is face south, d is face east.
-# q will return advance, while f is fire laser.
-# pressing l results in lunge, r is repair, c is charge. b is reverse.
+# -- controls --
+# w - face_north
+# a - face_west 
+# s - face_south 
+# d - face_east
+# q - advance 
+# f - fire_laser
+# l - lunge
+# r - repair 
+# c - charge_battery
+# b - reverse
 class CommandBot
   def initialize()
     @turn = 0
@@ -56,6 +63,6 @@ class CommandBot
     if key == 'b'
       return :reverse
     end
+      return :charge_battery
   end
-  return :charge_battery
 end
