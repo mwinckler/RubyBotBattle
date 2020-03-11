@@ -22,9 +22,12 @@ class TheBurninator
 
     n_enemies = game_state.enemies.size 
 
-    
-    if bot_state.health < 5
-      return :repair 
+    if x_dif or y_dif == 0
+      if bot_state.available_energy / 4 > game_state.enemies[0].available_energy
+        if bot_state.health < 5
+          return :repair 
+        end
+      end
     end
 
     if x_dif == 0
@@ -89,7 +92,11 @@ class TheBurninator
           return :face_west
         end
       end
-    end      
+    end   
+    
+    if bot_state.health < 5
+      return :repair 
+    end
 
     if @turn > 1 
       if y_dif.abs <= 3
