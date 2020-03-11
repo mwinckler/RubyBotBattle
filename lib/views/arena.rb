@@ -14,6 +14,8 @@ module Views
       west: "<"
     }
 
+    attr_accessor :render_offset
+
     def initialize(width, height, bots)
       @width = width
       @height = height
@@ -40,18 +42,14 @@ module Views
         Views::StatBox.new(Models::Point.new(@width + 3, 1), @bot_colors)
       ]
 
-      @active_animations = []
       # Account for the width of the arena frame so
       # animations can translate game board coordinates
       # to screen coordinates
       @render_offset = Models::Point.new(1, 1)
     end
 
-    def render(game_state, bot_states, frame, new_animations)
+    def render(game_state, bot_states, frame)
       clear_arena()
-
-      remove_completed_animations()
-      @active_animations.concat(new_animations)
 
       cursor = TTY::Cursor
       bot_states.each do |state|
@@ -66,14 +64,11 @@ module Views
         end
       end
 
-      @active_animations.each { |animation| animation.render(frame, @render_offset) }
       @child_views.each { |view| view.render(frame, game_state, bot_states) }
-
-      print cursor.move_to(0, @height + 2)
     end
 
-    def animations_complete?()
-      return @active_animations.empty?()
+    def reset_cursor()
+      print TTY::Cursor.move_to(0, @height + 2)
     end
 
     private
@@ -87,10 +82,6 @@ module Views
 
     def should_print_facing?(frame)
       return frame % Constants::FRAMES_PER_SECOND > Constants::FRAMES_PER_SECOND / 2
-    end
-
-    def remove_completed_animations()
-      @active_animations.reject! { |animation| animation.complete?() }
     end
   end
 end

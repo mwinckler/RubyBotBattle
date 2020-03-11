@@ -7,7 +7,7 @@ require_relative "lib/models/arena"
 require_relative "lib/models/arena_configuration"
 require_relative "lib/screen"
 require_relative "lib/views/arena"
-require_relative "lib/views/animations/factory"
+require_relative "lib/views/animations/animation_manager"
 
 class Game
   def initialize()
@@ -30,6 +30,8 @@ class Game
     bot_factory = BotFactory.new()
     frame = 0
 
+    animation_manager = Views::Animations::AnimationManager.new()
+
     while true do
       case current_screen
       when Screen::MAIN_MENU
@@ -51,30 +53,27 @@ class Game
         selected_bots = select_bots(bots_found[:available]).map { |klass| klass.new() }.shuffle()
         clear_screen()
         current_screen = Screen::ARENA
-        arena_model = Models::Arena.new(arena_config, selected_bots)
+        arena_model = Models::Arena.new(arena_config, animation_manager, selected_bots)
         arena_view = Views::Arena.new(arena_config.width, arena_config.height, selected_bots)
       when Screen::ARENA
         frame += 1
-        new_animations = []
 
         if (bot_states.nil? || frame % Constants::FRAMES_PER_ACTION == 1) && !arena_model.game_over?()
           turn_results = arena_model.execute_turn()
           bot_states = turn_results.bot_states
-          new_animations = turn_results.action_results.
-            map{ |result| result.animations }.
-            flatten.
-            reject{ |x| x.nil? }.
-            map{ |animation_model| Views::Animations::Factory.create_from(animation_model) }
         end
 
         arena_view.render(
           arena_model.unsafe_game_state(),
           bot_states,
-          frame,
-          new_animations
+          frame
         )
 
-        if arena_model.game_over?() && arena_view.animations_complete?()
+        animation_manager.render(frame, arena_view.render_offset)
+
+        arena_view.reset_cursor()
+
+        if arena_model.game_over?() && animation_manager.animations_complete?()
           current_screen = Screen::POST_FIGHT
         end
       when Screen::POST_FIGHT

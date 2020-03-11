@@ -6,12 +6,13 @@ require_relative "../../models/point"
 module Views
   module Animations
     class Lunge
-      def initialize(model)
-        @model = model
+      def initialize(origin, destination)
+        @origin = origin
+        @destination = destination
 
         @frame_delay = 1
-        @duration = [(model.origin.x - model.destination.x).abs, (model.origin.y - model.destination.y).abs].max * @frame_delay
-        @current_point = @model.origin
+        @duration = [(origin.x - destination.x).abs, (origin.y - destination.y).abs].max * @frame_delay
+        @current_point = origin
       end
 
       def render(frame, render_offset)
@@ -20,7 +21,7 @@ module Views
         @current_frame = frame
 
         if (@current_frame - @initial_frame) % @frame_delay == 0
-          @current_point.translate!(Models::Point.new(@model.destination.x <=> @current_point.x, @model.destination.y <=> @current_point.y))
+          @current_point.translate!(Models::Point.new(@destination.x <=> @current_point.x, @destination.y <=> @current_point.y))
         end
 
         render_point = @current_point.translate(render_offset)
