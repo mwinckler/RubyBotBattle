@@ -37,15 +37,15 @@ module Views
         return @animations.empty?()
       end
 
+      def render(frame, render_offset)
+        @animations.each { |animation| animation.render(frame, render_offset) }
+        remove_completed_animations()
+      end
+
       private
 
       def remove_completed_animations()
         @animations.reject! { |animation| animation.complete?() }
-      end
-
-      def render(frame, render_offset)
-        @animations.each { |animation| animation.render(frame, render_offset) }
-        remove_completed_animations()
       end
 
       def animations_complete?()
