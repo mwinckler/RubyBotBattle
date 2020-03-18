@@ -63,6 +63,8 @@ class CommandBot
     if key == 'b'
       return :reverse
     end
-      return :charge_battery
+    
+  return :charge_battery
+    
   end
 end
